@@ -115,6 +115,7 @@ void MainWindow::makeSample(void)
     if(outfile.open(QIODevice::WriteOnly))
     {
         QTextStream ostream(&outfile);
+        ostream.setCodec("UTF-8");
         ostream << "\"use strict\";\nvar sample=[" << endl;
         for(int i = 0; i < ui->listWidget->count(); i++)
         {
