@@ -7,6 +7,7 @@
 #include <QDir>
 #include <QTextStream>
 #include <QMessageBox>
+#include <QSettings>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -29,8 +30,13 @@ MainWindow::~MainWindow()
 
 void MainWindow::addFile(void)
 {
+    QSettings setting("WaPENTools", "MakeSample");
+    QString dir = setting.value("readdir", "").toString();
+
     QStringList filenames = QFileDialog::getOpenFileNames(this, nullptr, nullptr, "PENファイル (*.pen)");
     if(filenames.length() == 0) return;
+    dir = QFileInfo(filenames[0]).absolutePath();
+    setting.setValue("readdir", dir);
     for(QString filename : filenames)
             ui->listWidget->addItem(filename);
 }
@@ -108,8 +114,11 @@ void MainWindow::clearFile(void)
 
 void MainWindow::makeSample(void)
 {
-    QString dir = QFileDialog::getExistingDirectory(this, "保存するディレクトリ");
+    QSettings setting("WaPENTools", "MakeSample");
+    QString dir = setting.value("writedir", "").toString();
+    dir = QFileDialog::getExistingDirectory(this, "保存するディレクトリ");
     if(dir.length() == 0) return;
+    setting.setValue("writedir", dir);
     QString outfilename = dir + QDir::separator() + "sample.js";
     QFile outfile(outfilename);
     if(outfile.open(QIODevice::WriteOnly))
