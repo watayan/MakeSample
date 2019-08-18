@@ -33,7 +33,7 @@ void MainWindow::addFile(void)
     QSettings setting("WaPENTools", "MakeSample");
     QString dir = setting.value("readdir", "").toString();
 
-    QStringList filenames = QFileDialog::getOpenFileNames(this, nullptr, nullptr, "PENファイル (*.pen)");
+    QStringList filenames = QFileDialog::getOpenFileNames(this, nullptr, nullptr, "PENファイル (*.pen);;PyPENファイル (*.pypen)");
     if(filenames.length() == 0) return;
     dir = QFileInfo(filenames[0]).absolutePath();
     setting.setValue("readdir", dir);
